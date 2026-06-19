@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPA Construction LLC | Siding &amp; General Construction — North Carolina</title>
+<meta name="description" content="JPA Construction LLC — siding and general construction serving North Carolina. Licensed, family-run, built to last.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:#1B2421;
+    --pine-soft:#2A3530;
+    --panel:#EDE8DE;
+    --panel-dim:#D9D2C3;
+    --rust:#BF4421;
+    --rust-dim:#9A371A;
+    --fiber:#6B7B73;
+    --ink:#161B18;
+    --line: rgba(237,232,222,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--pine);
+    color:var(--panel);
+    font-family:'Archivo', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.eyebrow,.nav-brand{
+    font-family:'Archivo Expanded', sans-serif;
+    letter-spacing:0.01em;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+  /* lap-siding motif: overlapping horizontal planks used as dividers */
+  .siding-divider{
+    height:34px;
+    width:100%;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        var(--pine-soft) 0px, var(--pine-soft) 7px,
+        rgba(0,0,0,0.18) 7px, rgba(0,0,0,0.18) 8px,
+        var(--pine) 8px, var(--pine) 17px
+      );
+  }
+  .siding-divider.flip{ transform: scaleY(-1); }
+
+  /* ===== NAV ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(27,36,33,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px; max-width:1120px; margin:0 auto;
+  }
+  .nav-brand{
+    font-weight:800; font-size:1.05rem; color:var(--panel);
+    display:flex; align-items:center; gap:10px;
+  }
+  .nav-brand .mark{
+    width:30px; height:22px; flex:none;
+    background:repeating-linear-gradient(180deg, var(--rust) 0 4px, transparent 4px 7px);
+    border-radius:2px;
+  }
+  .nav-links{ display:flex; gap:32px; font-size:0.92rem; font-weight:500; }
+  .nav-links a{ color:var(--panel-dim); transition:color .15s; }
+  .nav-links a:hover{ color:var(--rust); }
+  .nav-cta{
+    background:var(--rust); color:#fff; padding:10px 20px; border-radius:3px;
+    font-weight:600; font-size:0.9rem; white-space:nowrap;
+  }
+  .nav-cta:hover{ background:var(--rust-dim); }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--panel); font-size:1.6rem; cursor:pointer; }
+  .nav-mobile{
+    display:none; flex-direction:column; padding:10px 28px 22px;
+    border-top:1px solid var(--line); background:var(--pine);
+  }
+  .nav-mobile a{ padding:12px 0; color:var(--panel-dim); font-weight:500; border-bottom:1px solid var(--line); }
+  .nav-mobile a:last-child{ border-bottom:none; }
+  .nav-mobile.open{ display:flex; }
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:96px 0 84px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.025) 0 38px, transparent 38px 76px);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    color:var(--rust); font-weight:700; font-size:0.78rem;
+    letter-spacing:0.16em; text-transform:uppercase;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:""; width:26px; height:2px; background:var(--rust);
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5.4vw, 4.2rem);
+    font-weight:800; line-height:1.04;
+    max-width:14ch;
+    color:var(--panel);
+  }
+  .hero h1 em{
+    font-style:normal; color:var(--rust);
+  }
+  .hero p.lede{
+    margin-top:26px; max-width:46ch;
+    font-size:1.12rem; color:var(--panel-dim);
+  }
+  .hero-actions{ display:flex; gap:16px; margin-top:38px; flex-wrap:wrap; }
+  .btn{
+    display:inline-block; padding:14px 26px; border-radius:3px;
+    font-weight:600; font-size:0.95rem; transition:all .15s;
+  }
+  .btn-primary{ background:var(--rust); color:#fff; }
+  .btn-primary:hover{ background:var(--rust-dim); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--panel); }
+  .btn-ghost:hover{ border-color:var(--rust); color:var(--rust); }
+
+  .hero-stats{
+    display:flex; gap:40px; margin-top:64px; flex-wrap:wrap;
+  }
+  .hero-stats .stat{ border-left:2px solid var(--rust); padding-left:14px; }
+  .hero-stats .stat .n{ font-family:'Archivo Expanded'; font-weight:800; font-size:1.7rem; }
+  .hero-stats .stat .l{ color:var(--panel-dim); font-size:0.84rem; margin-top:2px; }
+
+  /* ===== SECTIONS shared ===== */
+  section{ padding:80px 0; }
+  .section-head{ max-width:60ch; margin-bottom:48px; }
+  .section-head .eyebrow{ margin-bottom:14px; }
+  .section-head h2{
+    font-size:clamp(1.8rem, 3vw, 2.5rem); font-weight:800; color:var(--panel);
+  }
+  .section-head p{ margin-top:14px; color:var(--panel-dim); font-size:1.04rem; }
+
+  /* ===== SERVICES ===== */
+  .services{ background:var(--pine-soft); }
+  .service-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .service-card{
+    background:var(--pine-soft); padding:34px 30px;
+  }
+  .service-card .num{
+    color:var(--rust); font-family:'Archivo Expanded'; font-weight:800;
+    font-size:0.85rem; letter-spacing:0.08em;
+  }
+  .service-card h3{
+    margin-top:16px; font-size:1.22rem; color:var(--panel);
+  }
+  .service-card p{
+    margin-top:12px; color:var(--panel-dim); font-size:0.96rem;
+  }
+
+  /* ===== WHY / PROCESS ===== */
+  .why{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+  .why h2{ font-size:clamp(1.8rem,3vw,2.4rem); font-weight:800; max-width:14ch; }
+  .why-list{ margin-top:0; }
+  .why-item{
+    display:flex; gap:18px; padding:22px 0; border-top:1px solid var(--line);
+  }
+  .why-item:last-child{ border-bottom:1px solid var(--line); }
+  .why-item .mk{ color:var(--rust); font-weight:800; font-family:'Archivo Expanded'; flex:none; width:28px;}
+  .why-item h4{ color:var(--panel); font-size:1.02rem; margin-bottom:6px; }
+  .why-item p{ color:var(--panel-dim); font-size:0.93rem; }
+
+  /* ===== AREA ===== */
+  .area{ background:var(--pine-soft); }
+  .area-inner{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:32px; }
+  .area-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+  .area-tags span{
+    border:1px solid var(--line); padding:8px 16px; border-radius:30px;
+    font-size:0.88rem; color:var(--panel-dim);
+  }
+
+  /* ===== CONTACT ===== */
+  .contact .wrap{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:64px;
+  }
+  .contact h2{ font-size:clamp(1.8rem,3vw,2.4rem); font-weight:800; max-width:13ch; }
+  .contact p.lede{ color:var(--panel-dim); margin-top:18px; max-width:42ch; }
+  .contact-card{
+    background:var(--pine-soft); border:1px solid var(--line); border-radius:4px; padding:36px;
+  }
+  .contact-row{
+    display:flex; align-items:flex-start; gap:16px; padding:18px 0; border-top:1px solid var(--line);
+  }
+  .contact-row:first-child{ border-top:none; padding-top:0; }
+  .contact-row .lbl{ font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--rust); font-weight:700; width:80px; flex:none; padding-top:3px;}
+  .contact-row .val{ color:var(--panel); font-size:1.05rem; font-weight:600; }
+  .contact-row .val a:hover{ color:var(--rust); }
+  .contact-note{ margin-top:24px; color:var(--panel-dim); font-size:0.88rem; }
+
+  /* ===== FOOTER ===== */
+  footer{ padding:36px 0; }
+  .foot-inner{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+    color:var(--panel-dim); font-size:0.86rem;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:860px){
+    .nav-links{ display:none; }
+    .nav-cta{ display:none; }
+    .nav-toggle{ display:block; }
+    .service-grid{ grid-template-columns:1fr; }
+    .why{ grid-template-columns:1fr; gap:36px; }
+    .contact{ grid-template-columns:1fr; }
+    .hero-stats{ gap:28px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#top" class="nav-brand"><span class="mark"></span>JPA CONSTRUCTION</a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#why">Why Us</a>
+      <a href="#area">Service Area</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta" id="navCta">Get a Quote</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  </nav>
+  <div class="nav-mobile" id="navMobile">
+    <a href="#services">Services</a>
+    <a href="#why">Why Us</a>
+    <a href="#area">Service Area</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">North Carolina · Siding &amp; General Construction</div>
+      <h1>Built right, <em>plank by plank.</em></h1>
+      <p class="lede">JPA Construction LLC is a family-run crew specializing in siding installation and general construction across North Carolina — straightforward estimates, solid craftsmanship, no shortcuts.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Request a Free Estimate</a>
+        <a href="#services" class="btn btn-ghost">See Our Work</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n">100%</div><div class="l">Family-operated</div></div>
+        <div class="stat"><div class="n">NC</div><div class="l">Licensed &amp; local</div></div>
+        <div class="stat"><div class="n">2</div><div class="l">Generations on the crew</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="siding-divider"></div>
+
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">What We Do</div>
+        <h2>Siding and construction, done by the people who show up.</h2>
+        <p>From a single wall of damaged siding to a full exterior overhaul, we scope it honestly and build it to last through Carolina weather.</p>
+      </div>
+      <div class="service-grid">
+        <div class="service-card">
+          <div class="num">01</div>
+          <h3>Siding Installation</h3>
+          <p>Vinyl, fiber cement, and engineered wood siding — installed with proper flashing and drainage so it actually holds up, not just looks good on day one.</p>
+        </div>
+        <div class="service-card">
+          <div class="num">02</div>
+          <h3>Siding Repair</h3>
+          <p>Storm damage, rot, warping, or cracked panels. We match existing siding where possible and fix the cause, not just the symptom.</p>
+        </div>
+        <div class="service-card">
+          <div class="num">03</div>
+          <h3>General Construction</h3>
+          <p>Framing, exterior carpentry, decks, and structural repairs. If it's part of the building envelope, it's part of what we do.</p>
+        </div>
+        <div class="service-card">
+          <div class="num">04</div>
+          <h3>Trim &amp; Soffit/Fascia</h3>
+          <p>Clean trim work and soffit/fascia replacement that protects the roofline and finishes the job properly.</p>
+        </div>
+        <div class="service-card">
+          <div class="num">05</div>
+          <h3>Exterior Renovation</h3>
+          <p>Full exterior refreshes — siding, trim, and paint-ready prep — for homeowners ready for a real curb-appeal upgrade.</p>
+        </div>
+        <div class="service-card">
+          <div class="num">06</div>
+          <h3>Estimates &amp; Consultation</h3>
+          <p>A straight walkthrough, a written estimate, and a real timeline — before any work starts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap why">
+      <div>
+        <div class="eyebrow">Why JPA</div>
+        <h2>Run by family. Held to a standard.</h2>
+        <p style="margin-top:18px; color:var(--panel-dim); max-width:36ch;">
+          JPA Construction is run by brothers who grew up around the trade. That means every estimate is honest, every job is one we'd be proud to put our name on, and every call gets answered by someone who actually knows the project.
+        </p>
+      </div>
+      <div class="why-list">
+        <div class="why-item">
+          <div class="mk">01</div>
+          <div><h4>Direct communication</h4><p>You talk to the people doing the work — not a call center.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="mk">02</div>
+          <div><h4>Written, honest estimates</h4><p>Clear scope and pricing before anything starts, no surprise add-ons.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="mk">03</div>
+          <div><h4>Built for NC weather</h4><p>Proper flashing, drainage planes, and materials suited to humidity and storms.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="mk">04</div>
+          <div><h4>We finish what we start</h4><p>Realistic timelines, and we stick to them.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="siding-divider flip"></div>
+
+  <section class="area" id="area">
+    <div class="wrap">
+      <div class="area-inner">
+        <div>
+          <div class="eyebrow">Where We Work</div>
+          <h2 style="font-size:clamp(1.8rem,3vw,2.4rem); font-weight:800;">Serving North Carolina</h2>
+          <div class="area-tags">
+            <span>Wendell</span>
+            <span>Raleigh</span>
+            <span>Knightdale</span>
+            <span>Zebulon</span>
+            <span>Garner</span>
+            <span>Clayton</span>
+            <span>Wake Forest</span>
+            <span>+ surrounding areas</span>
+          </div>
+        </div>
+        <a href="#contact" class="btn btn-primary">Check Your Address</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Get In Touch</div>
+        <h2>Let's talk about your project.</h2>
+        <p class="lede">Reach out for a free estimate — siding, repair, or general construction. We'll walk the job, give you a straight answer, and a real price.</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-row">
+          <div class="lbl">Phone</div>
+          <div class="val"><a href="tel:9199017642">(919) 901-7642</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="lbl">Email</div>
+          <div class="val"><a href="mailto:danieldj2003@nc.rr.com">danieldj2003@nc.rr.com</a></div>
+        </div>
+        <div class="contact-row">
+          <div class="lbl">Area</div>
+          <div class="val">Wendell, NC &amp; surrounding</div>
+        </div>
+        <div class="contact-note">Estimates are free. We typically respond within one business day.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>© <span id="year"></span> JPA Construction LLC. All rights reserved.</div>
+    <div>(919) 901-7642 · danieldj2003@nc.rr.com</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const navToggle = document.getElementById('navToggle');
+  const navMobile = document.getElementById('navMobile');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navMobile.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+    navToggle.innerHTML = isOpen ? '&times;' : '&#9776;';
+  });
+  navMobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navMobile.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', false);
+    navToggle.innerHTML = '&#9776;';
+  }));
+</script>
+
+</body>
+</html>
